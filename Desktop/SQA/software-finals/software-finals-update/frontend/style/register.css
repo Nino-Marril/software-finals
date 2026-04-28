@@ -1,0 +1,55 @@
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .register-left {
+    background:
+    linear-gradient(rgba(28, 13, 5, 0.55), rgba(28, 13, 5, 0.55)),
+    url("https://images.unsplash.com/photo-1504674900247-0877df9cc836");
+    background-size: cover;
+    background-position: center;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    color: white;
+    }
+    h2 {
+      text-align: center;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+    }

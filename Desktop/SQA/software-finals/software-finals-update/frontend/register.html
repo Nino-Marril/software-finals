@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paldo Foods | Register</title>
+
+  <link rel="stylesheet" href="style/login.css" />
+</head>
+
+<body>
+  <main class="login-page">
+
+    <!-- LEFT SIDE (same branding) -->
+    <section class="login-left">
+      <div class="brand-box">
+        <p class="eyebrow">Join • Order • Enjoy</p>
+        <h1>Paldo Foods</h1>
+        <p>
+          Create an account to start ordering your favorite meals,
+          rice bowls, siomai, noodles, and drinks anytime.
+        </p>
+
+        <div class="food-card">
+          <div>
+            <h3>New User Bonus</h3>
+            <p>Exclusive discounts for first-time users</p>
+          </div>
+          <span>FREE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDE (register form) -->
+    <section class="login-right">
+      <form id="registerForm" class="login-card">
+
+        <div class="form-header">
+          <h2>Create Account</h2>
+          <p>Sign up to start ordering delicious meals.</p>
+        </div>
+
+        <div id="message" class="message hidden"></div>
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Choose a username"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Create a password"
+            required
+          />
+        </div>
+
+        <!-- ROLE (hidden for safety OR optional dropdown) -->
+        <input type="hidden" id="role" value="customer" />
+
+        <button type="submit">Create Account</button>
+
+        <p style="text-align:center; margin-top:10px;">
+          Already have an account?
+          <a href="login.html">Login here</a>
+        </p>
+
+      </form>
+    </section>
+
+  </main>
+
+  <script src="register.js"></script>
+</body>
+</html>
