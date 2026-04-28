@@ -1,42 +1,64 @@
-document.getElementById('loginForm').addEventListener('submit', async (event) => {
+const loginForm = document.getElementById("loginForm");
+const messageBox = document.getElementById("messageBox");
+const loginButton = document.getElementById("loginButton");
 
-    //user input action
-    const username = document.getElementById('username').ariaValueMax;
-    const password = document.getElementById('password').ariaValueMax;
+function showMessage(message, type) {
+  messageBox.textContent = message;
+  messageBox.className = `message ${type}`;
+}
 
-    if(!username || !password) {
-        alert("Input the lackings!!");
-        return;
+function clearMessage() {
+  messageBox.textContent = "";
+  messageBox.className = "message hidden";
+}
+
+loginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  clearMessage();
+
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!username || !password) {
+    showMessage("Please enter your username and password.", "error");
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Logging in...";
+
+  try {
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      showMessage(data.message || "Login failed. Please try again.", "error");
+      return;
     }
 
-//scratch 
-    // if(password < 8) {
-    //     alert('put more than 8 please');
-    // }
+    showMessage("Login successful. Redirecting...", "success");
 
-    //     try {
-    //         //wala pa ni especially and kaning localhost
-    //     //     const response = await fetch('http://localhost:3000/api/login', {
-    //     //     method: 'POST',
-    //     //     headers: {
-    //     //         'Content-Type': 'application/json'
-    //     //     },
-    //     //     body: JSON.stringify({ username, password })
-    //     // });
+    localStorage.setItem("loggedInUser", JSON.stringify(data.user));
 
-    //     //const data = await response.json();
-
-    //         if (response.ok) {
-    //             // Success: User is logged in
-    //             console.log("Login successful:", data);
-    //             // Redirect to the menu navigation page 
-    //             window.location.href = 'menu.html';
-    //         } else {
-    //             // Error: Show notification to the user 
-    //             alert(data.message || "Login failed. Please check your credentials.");
-    //         }
-    //     } catch (error) {
-    //     console.error("Critical functional bug detected during login:", error); [cite: 15]
-    //     alert("Unable to connect to the server. Please try again later."); [cite: 46]
-    // }
+    setTimeout(() => {
+      window.location.href = "menu.html";
+    }, 900);
+  } catch (error) {
+    console.error("Login request failed:", error);
+    showMessage("Unable to connect to the server. Please check if backend is running.", "error");
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
+  }
 });
