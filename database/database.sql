@@ -1,76 +1,72 @@
 CREATE DATABASE IF NOT EXISTS paldo_foods;
 USE paldo_foods;
 
--- 1. Users Table
-CREATE TABLE `users` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `username` varchar(255),
-  `role` varchar(255),
-  `password_hash` varchar(255), -- Requirement 1.c [cite: 51]
-  `created_at` timestamp DEFAULT (now())
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('customer', 'admin') DEFAULT 'customer',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. Products Table (Changed ID name to be more standard)
-CREATE TABLE `products` (
-  `product_id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255),
-  `price` decimal(10, 2) NOT NULL, -- Specified precision for calculations 
-  `stock_qty` int NOT NULL -- Requirement for input validation [cite: 23]
+CREATE TABLE products (
+  product_id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  stock_qty INT NOT NULL DEFAULT 0,
+  image_url VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Orders Table
-CREATE TABLE `orders` (
-  `order_id` int PRIMARY KEY AUTO_INCREMENT,
-  `user_id` int,
-  `total_amount` decimal(10, 2),
-  `status` varchar(255) DEFAULT 'Pending',
-  `created_at` timestamp DEFAULT (now()),
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+CREATE TABLE orders (
+  order_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  status ENUM('Pending', 'Preparing', 'Out for Delivery', 'Completed', 'Cancelled') DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- 4. Sessions Table
-CREATE TABLE sessions (
-    session_id VARCHAR(255) PRIMARY KEY,
-    id INT,  
-    cart_data JSON, -- Requirement 6.b 
-    expires_at TIMESTAMP,  
-    FOREIGN KEY (id) REFERENCES users(id)
-) ENGINE=InnoDB;
-
--- 5. Order Items Table (Crucial for Order Summary [cite: 44, 79])
 CREATE TABLE order_items (
-  order_item_id INT AUTO_INCREMENT PRIMARY KEY,
-  order_id INT, 
-  product_id INT,
+  order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT NOT NULL,
+  product_id INT NOT NULL,
   quantity INT NOT NULL,
-  price_at_purchase DECIMAL(10, 2) NOT NULL,
+  price_at_purchase DECIMAL(10,2) NOT NULL,
   FOREIGN KEY (order_id) REFERENCES orders(order_id),
   FOREIGN KEY (product_id) REFERENCES products(product_id)
-) ENGINE=InnoDB;
+);
 
+CREATE TABLE sessions (
+  session_id VARCHAR(255) PRIMARY KEY,
+  user_id INT NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
+INSERT INTO users (username, email, password_hash, role) VALUES
+('admin', 'admin@paldofoods.com', '$2b$10$7k2Umtkw9CQohAYGMGzT9eWzG8eoRy1Wc1JqBxiTJqouzt5Qi78jG', 'admin'),
+('customer', 'customer@paldofoods.com', '$2b$10$7k2Umtkw9CQohAYGMGzT9eWzG8eoRy1Wc1JqBxiTJqouzt5Qi78jG', 'customer');
 
--- 1. Seed Users (Including an Admin and a Customer)
-INSERT INTO users (username, role, password_hash) VALUES
-('admin_ken', 'admin', '$2b$10$StandardHashForTesting123'),
-('cyrus_buyer', 'customer', '$2b$10$StandardHashForTesting456');
+INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
+('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
+('Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
+('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
+('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc');
 
--- 2. Seed Products (To test Menu Navigation and Search)
-INSERT INTO products (name, price, stock_qty) VALUES
-('Pork Siomai (4pcs)', 45.00, 100),
-('Ngohiong', 12.00, 150),
-('Steamed Rice', 35.00, 80),
-('Hanging Rice (Puso)', 5.00, 200),
-('Special Batchoy', 85.00, 30),
-('Iced Tea Large', 25.00, 60);
-
--- 3. Seed a Sample Order (To test Order Summary logic)
 INSERT INTO orders (user_id, total_amount, status) VALUES
-(2, 102.00, 'Pending');
+(2, 179.00, 'Pending');
 
--- 4. Seed Order Items (Linking the sample order to products)
--- This represents an order of 1 Siomai, 1 Steamed Rice, and 4 Puso
 INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES
 (1, 1, 1, 45.00),
-(1, 3, 1, 35.00),
-(1, 4, 4, 5.50);
+(1, 2, 1, 99.00),
+(1, 4, 1, 35.00);
