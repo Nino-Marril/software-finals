@@ -63,6 +63,14 @@ INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
 ('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
 ('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc');
 
+
+INSERT INTO products (name, description, price, stock_qty, image_url) VALUES 
+('Fried Bangus (Milkfish)', 'Crispy pan-fried marinated milkfish served with spiced vinegar.', 120.00, 40, 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2'),
+('Sizzling Pork Sisig', 'Savory minced pork with onions, calamansi, and chili on a sizzling plate.', 150.00, 30, 'https://images.unsplash.com/photo-1626500155551-30910f545199'),
+('Beef Pares', 'Braised beef brisket in a sweet and salty star anise broth with garlic fried rice.', 110.00, 60, 'https://images.unsplash.com/photo-1546549032-9571cd6b27df'),
+('Pancit Guisado', 'Stir-fried noodles with fresh vegetables, pork, and shrimp.', 75.00, 90, 'https://images.unsplash.com/photo-1585032226651-759b368d7246'),
+('Halo-Halo Special', 'Classic Filipino dessert with crushed ice, evaporated milk, and various sweet beans and jellies.', 65.00, 100, 'https://images.unsplash.com/photo-1626202133282-f8502c993092');
+
 INSERT INTO orders (user_id, total_amount, status) VALUES
 (2, 179.00, 'Pending');
 
