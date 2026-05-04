@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paldo Foods | Register</title>
+
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <main class="login-page">
+    <!-- LEFT SIDE (same design) -->
+    <section class="login-left">
+      <div class="brand-box">
+        <p class="eyebrow">Fast • Fresh • Local</p>
+        <h1>Paldo Foods</h1>
+        <p>
+          Create an account and start ordering your favorite meals,
+          rice bowls, siomai, noodles, and drinks.
+        </p>
+
+        <div class="food-card">
+          <div>
+            <h3>New User Deal</h3>
+            <p>Free Drink on First Order</p>
+          </div>
+          <span>🎉</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDE (REGISTER FORM) -->
+    <section class="login-right">
+      <form id="registerForm" class="login-card">
+        <div class="form-header">
+          <h2>Create Account</h2>
+          <p>Sign up to start ordering delicious meals.</p>
+        </div>
+
+        <div id="messageBox" class="message hidden"></div>
+
+        <div class="input-group">
+          <label for="fullname">Full Name</label>
+          <input
+            type="text"
+            id="fullname"
+            name="fullname"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Choose a username"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Create a password"
+            required
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="registerButton">Register</button>
+
+        <p class="test-account">
+          Already have an account? <a href="login.html">Login here</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script src="register.js"></script>
+</body>
+</html>
