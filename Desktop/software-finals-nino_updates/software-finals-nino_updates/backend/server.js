@@ -11,7 +11,14 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://127.0.0.1:5500",
+    origin: function (origin, callback) {
+      // Allow all localhost origins during development
+      if (!origin || origin.includes("localhost") || origin.includes("127.0.0.1")) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
   })
 );
@@ -19,7 +26,7 @@ app.use(
 const dbConfig = {
   host: "localhost",
   user: "root",
-  password: "",
+  password: "mySql2025!",
   database: "paldo_foods",
 };
 
@@ -95,9 +102,9 @@ app.post("/api/login", async (req, res) => {
 
     res.setHeader(
       "Set-Cookie",
-      `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`
+      `session_id=${sessionId}; HttpOnly; Path=/; Max-Age=86400; SameSite=None; Secure`
     );
-
+    
     return res.json({
       success: true,
       message: "Login successful.",
