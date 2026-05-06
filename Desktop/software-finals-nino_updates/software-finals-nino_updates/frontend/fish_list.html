@@ -5,34 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Paldo Foods | Fish Menu</title>
 
-  <link rel="stylesheet" href="css/design.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <!-- //session-guard.js -->
-    <meta charset="UTF-8" />
-    <script src="js/session-guard.js"></script> <!-- Place it here -->
-    <title>Paldo Foods | Menu</title>
-    <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="css/design.css" />
+  <script src="js/session-guard.js"></script>
+  <link rel="stylesheet" href="login.css" />
+  
+  <script src="js/navbar.js" defer></script>
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <h2 class="logo">Paldo Foods</h2>
+  <div id="navbar-placeholder"></div>
 
-    <ul class="nav-center">
-      <li><a href="fish_list.html" class="active">Fish</a></li>
-      <li><a href="chicken.html">Chicken</a></li>
-      <li><a href="pork.html">Pork</a></li>
-      <li><a href="beef.html">Beef</a></li>
-    </ul>
-    <a href="#">Cart</a>
-    <a href="#" class="profile-link">Profile</a>
-  </nav>
-
-  <!-- FISH MENU GRID ONLY (NO TEXT SECTION) -->
-  <section class="menu-wrapper">
-
+  <section class="menu-wrapper container my-5">
     <div class="menu-grid">
 
       <div class="menu-card">
@@ -64,8 +50,8 @@
       </div>
 
     </div>
-
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
