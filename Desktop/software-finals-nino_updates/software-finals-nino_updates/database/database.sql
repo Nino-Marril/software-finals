@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS paldo_foods;
 USE paldo_foods;
 
+DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
@@ -53,9 +54,21 @@ CREATE TABLE sessions (
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE cart (
+  cart_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_product (user_id, product_id)
+);
+
+
 INSERT INTO users (username, email, password_hash, role) VALUES
-('admin', 'admin@paldofoods.com', '$2b$10$7k2Umtkw9CQohAYGMGzT9eWzG8eoRy1Wc1JqBxiTJqouzt5Qi78jG', 'admin'),
-('customer', 'customer@paldofoods.com', '$2b$10$7k2Umtkw9CQohAYGMGzT9eWzG8eoRy1Wc1JqBxiTJqouzt5Qi78jG', 'customer');
+('admin', 'admin@paldofoods.com', '$2b$10$ql0rgrBl//u0u3rWGt1SdeQK32fFmPbRLkY6JqNB/D2lpRk.eTXly', 'admin'),
+('customer', 'customer@paldofoods.com', '$2b$10$ql0rgrBl//u0u3rWGt1SdeQK32fFmPbRLkY6JqNB/D2lpRk.eTXly', 'customer');
 
 INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
 ('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
