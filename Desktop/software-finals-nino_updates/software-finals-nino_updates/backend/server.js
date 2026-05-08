@@ -221,6 +221,116 @@ app.get("/api/check-session", async (req, res) => {
   }
 });
 
+// backend/server.js
+
+app.get("/api/cart", async (req, res) => {
+  const sessionId = getCookie(req, "session_id");
+  if (!sessionId) return res.status(401).json({ message: "Not logged in" });
+
+  try {
+    const connection = await getConnection();
+    
+    // Get user from session
+    const [sessions] = await connection.execute(
+      "SELECT user_id FROM sessions WHERE session_id = ? AND expires_at > NOW()", 
+      [sessionId]
+    );
+    
+    if (sessions.length === 0) return res.status(401).json({ message: "Invalid session" });
+    const userId = sessions[0].user_id;
+
+    // Get cart items joined with product names/prices
+    const [cartItems] = await connection.execute(
+      `SELECT c.cart_id, c.product_id, p.name, p.price, c.quantity 
+       FROM cart c 
+       JOIN products p ON c.product_id = p.product_id 
+       WHERE c.user_id = ?`,
+      [userId]
+    );
+
+    await connection.end();
+    res.json({ success: true, cartItems });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/cart", async (req, res) => {
+  const sessionId = getCookie(req, "session_id");
+  if (!sessionId) return res.status(401).json({ message: "Not logged in" });
+
+  const { product_id, quantity = 1 } = req.body;
+  if (!product_id) return res.status(400).json({ message: "product_id required" });
+
+  try {
+    const connection = await getConnection();
+
+    const [sessions] = await connection.execute(
+      "SELECT user_id FROM sessions WHERE session_id = ? AND expires_at > NOW()",
+      [sessionId]
+    );
+    if (sessions.length === 0) {
+      await connection.end();
+      return res.status(401).json({ message: "Invalid session" });
+    }
+    const userId = sessions[0].user_id;
+
+    // Upsert: if item already in cart, increment quantity; otherwise insert
+    await connection.execute(
+      `INSERT INTO cart (user_id, product_id, quantity)
+       VALUES (?, ?, ?)
+       ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)`,
+      [userId, product_id, quantity]
+    );
+
+    await connection.end();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// In server.js — PATCH quantity
+app.patch("/api/cart/:cart_id", async (req, res) => {
+  const sessionId = getCookie(req, "session_id");
+  if (!sessionId) return res.status(401).json({ message: "Not logged in" });
+
+  const { cart_id } = req.params;
+  const { delta } = req.body; // +1 or -1
+
+  try {
+    const connection = await getConnection();
+    await connection.execute(
+      "UPDATE cart SET quantity = quantity + ? WHERE cart_id = ?",
+      [delta, cart_id]
+    );
+    // Remove if quantity drops to 0
+    await connection.execute(
+      "DELETE FROM cart WHERE cart_id = ? AND quantity <= 0",
+      [cart_id]
+    );
+    await connection.end();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// In server.js — DELETE item
+app.delete("/api/cart/:cart_id", async (req, res) => {
+  const sessionId = getCookie(req, "session_id");
+  if (!sessionId) return res.status(401).json({ message: "Not logged in" });
+
+  try {
+    const connection = await getConnection();
+    await connection.execute("DELETE FROM cart WHERE cart_id = ?", [req.params.cart_id]);
+    await connection.end();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/api/products", async (req, res) => {
   try {
     const connection = await getConnection();
