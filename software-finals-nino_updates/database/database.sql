@@ -71,11 +71,10 @@ INSERT INTO users (username, email, password_hash, role) VALUES
 ('customer', 'customer@paldofoods.com', '$2b$10$ql0rgrBl//u0u3rWGt1SdeQK32fFmPbRLkY6JqNB/D2lpRk.eTXly', 'customer');
 
 INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
-('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
-('Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
+( 'Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
+( 'Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
 ('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
-('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc');
-INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
+('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc'),
 ('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
 ('Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
 ('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
