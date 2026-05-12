@@ -31,12 +31,13 @@ async function loadCart() {
     let totalAmount = 0;
 
     tableBody.innerHTML = cart.map(item => {
-      const itemTotal = item.price * item.quantity;
+      const unitPrice = Number(item.price);
+      const itemTotal = unitPrice * item.quantity;
       totalAmount += itemTotal;
       return `
         <tr>
           <td><p class="mb-0 fw-bold">${item.name}</p></td>
-          <td>₱${item.price}</td>
+          <td>₱${unitPrice.toFixed(2)}</td>
           <td>
             <div class="d-flex align-items-center gap-2">
               <button class="btn btn-sm btn-outline-secondary rounded-circle"
@@ -46,7 +47,7 @@ async function loadCart() {
                 onclick="changeQty(${item.cart_id}, 1)">+</button>
             </div>
           </td>
-          <td class="fw-bold">₱${itemTotal}</td>
+          <td class="fw-bold">₱${itemTotal.toFixed(2)}</td>
           <td>
             <button class="btn btn-sm text-danger"
               onclick="removeItem(${item.cart_id})">Remove</button>
@@ -62,26 +63,37 @@ async function loadCart() {
 
 // In cart.js — updated changeQty and removeItem
 async function changeQty(cartId, delta) {
-  await fetch(`http://localhost:3000/api/cart/${cartId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ delta }),
-  });
-  loadCart();
+  try {
+    await fetch(`http://localhost:3000/api/cart/${cartId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ delta }),
+    });
+  } catch (err) {
+    console.error("Failed to update quantity:", err);
+  }
+  await loadCart();
+  if (window.refreshCartBadge) window.refreshCartBadge();
 }
 
 async function removeItem(cartId) {
-  await fetch(`http://localhost:3000/api/cart/${cartId}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-  loadCart();
+  try {
+    await fetch(`http://localhost:3000/api/cart/${cartId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+  } catch (err) {
+    console.error("Failed to remove item:", err);
+  }
+  await loadCart();
+  if (window.refreshCartBadge) window.refreshCartBadge();
 }
 
 function updateTotals(total) {
-  document.getElementById('subtotal').innerText = `₱${total}`;
-  document.getElementById('grandTotal').innerText = `₱${total}`;
+  const formatted = `₱${Number(total).toFixed(2)}`;
+  document.getElementById('subtotal').innerText = formatted;
+  document.getElementById('grandTotal').innerText = formatted;
 }
 
 async function checkout() {

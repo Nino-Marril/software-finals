@@ -484,12 +484,22 @@ app.post("/api/checkout", async (req, res) => {
 });
 
 app.get("/api/products", async (req, res) => {
+  const ALLOWED_CATEGORIES = ["chicken", "pork", "beef", "fish", "drinks"];
+  const rawCategory = (req.query.category || "").toLowerCase().trim();
+  const category = ALLOWED_CATEGORIES.includes(rawCategory) ? rawCategory : null;
+
   try {
     const connection = await getConnection();
 
-    const [products] = await connection.execute(
-      "SELECT product_id, name, description, price, stock_qty, image_url FROM products ORDER BY product_id ASC"
-    );
+    const baseSelect =
+      "SELECT product_id, name, category, description, price, stock_qty, image_url FROM products";
+
+    const [products] = category
+      ? await connection.execute(
+          `${baseSelect} WHERE category = ? ORDER BY product_id ASC`,
+          [category]
+        )
+      : await connection.execute(`${baseSelect} ORDER BY product_id ASC`);
 
     await connection.end();
 
