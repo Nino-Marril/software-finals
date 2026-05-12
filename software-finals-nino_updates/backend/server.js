@@ -503,6 +503,87 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+app.post("/api/register", async (req, res) => {
+
+  const {
+    fullname,
+    email,
+    username,
+    password
+  } = req.body;
+
+  // VALIDATION
+  if (!fullname || !email || !username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required.",
+    });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: "Password must be at least 6 characters.",
+    });
+  }
+
+  try {
+
+    const connection = await getConnection();
+
+    // CHECK IF USER EXISTS
+    const [existingUsers] = await connection.execute(
+      `SELECT user_id
+       FROM users
+       WHERE username = ?
+       OR email = ?
+       LIMIT 1`,
+      [username, email]
+    );
+
+    if (existingUsers.length > 0) {
+
+      await connection.end();
+
+      return res.status(409).json({
+        success: false,
+        message: "Username or email already exists.",
+      });
+    }
+
+    // HASH PASSWORD
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // INSERT USER
+    await connection.execute(
+      `INSERT INTO users
+       (username, email, password_hash)
+       VALUES (?, ?, ?)`,
+      [
+        username,
+        email,
+        passwordHash
+      ]
+    );
+
+    await connection.end();
+
+    return res.json({
+      success: true,
+      message: "Registration successful.",
+    });
+
+  } catch (error) {
+
+    console.error("Register error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error.",
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

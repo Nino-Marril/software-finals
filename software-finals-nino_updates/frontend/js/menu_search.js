@@ -167,15 +167,52 @@ function filterMenu(category, element) {
  */
 // Update your DOMContentLoaded in menu_search.js
 document.addEventListener('DOMContentLoaded', async () => {
+
+  let currentProducts = [];
+
   try {
+
     const response = await fetch("http://localhost:3000/api/products");
     const data = await response.json();
+
     if (data.success) {
-      renderCards(data.products); 
+      currentProducts = data.products;
+      renderCards(currentProducts);
     }
+
   } catch (err) {
-    renderCards(menuData);
+
+    // fallback if backend fails
+    currentProducts = menuData;
+    renderCards(currentProducts);
+
+  }
+
+  // SEARCH FUNCTIONALITY
+  const searchInput = document.getElementById("searchInput");
+
+  if (searchInput) {
+
+    searchInput.addEventListener("input", () => {
+
+      const value = searchInput.value.toLowerCase();
+
+      const filteredProducts = currentProducts.filter(item =>
+
+        item.name.toLowerCase().includes(value) ||
+
+        (item.description || item.desc)
+          .toLowerCase()
+          .includes(value)
+
+      );
+
+      renderCards(filteredProducts);
+
+    });
+
   }
 
   syncCartFromDB();
+
 });

@@ -1,0 +1,94 @@
+CREATE DATABASE IF NOT EXISTS paldo_foods;
+USE paldo_foods;
+
+DROP TABLE IF EXISTS cart;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('customer', 'admin') DEFAULT 'customer',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+  product_id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  stock_qty INT NOT NULL DEFAULT 0,
+  image_url VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+  order_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  status ENUM('Pending', 'Preparing', 'Out for Delivery', 'Completed', 'Cancelled') DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE order_items (
+  order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  price_at_purchase DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(order_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE sessions (
+  session_id VARCHAR(255) PRIMARY KEY,
+  user_id INT NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE cart (
+  cart_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_product (user_id, product_id)
+);
+
+
+INSERT INTO users (username, email, password_hash, role) VALUES
+('admin', 'admin@paldofoods.com', '$2b$10$ql0rgrBl//u0u3rWGt1SdeQK32fFmPbRLkY6JqNB/D2lpRk.eTXly', 'admin'),
+('customer', 'customer@paldofoods.com', '$2b$10$ql0rgrBl//u0u3rWGt1SdeQK32fFmPbRLkY6JqNB/D2lpRk.eTXly', 'customer');
+
+INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
+('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
+('Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
+('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
+('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc');
+INSERT INTO products (name, description, price, stock_qty, image_url) VALUES
+('Pork Siomai', 'Juicy steamed pork siomai served with chili garlic sauce.', 45.00, 100, 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf'),
+('Chicken Rice Bowl', 'Warm rice bowl with chicken toppings and savory sauce.', 99.00, 80, 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d'),
+('Special Batchoy', 'Hot noodle soup with pork, egg, and flavorful broth.', 85.00, 50, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624'),
+('Iced Tea', 'Refreshing house-blend iced tea.', 35.00, 120, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc'),
+('Fish Fillet', 'Crispy golden-brown white fish fillet served with tartar sauce.', 120.00, 60, 'https://images.unsplash.com/photo-1574484284002-952d92456975'),
+('Fried Bangus', 'Crispy fried milkfish marinated in vinegar, garlic, and peppercorns.', 150.00, 40, 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2'),
+('Grilled Tilapia', 'Freshly grilled tilapia seasoned with herbs and spices.', 135.00, 45, 'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6'),
+('Sinigang na Isda', 'Traditional Filipino sour soup with fish and fresh local vegetables.', 165.00, 30, 'https://images.unsplash.com/photo-1626509135522-646d6767233e');
+
+INSERT INTO orders (user_id, total_amount, status) VALUES
+(2, 179.00, 'Pending');
+
+INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES
+(1, 1, 1, 45.00),
+(1, 2, 1, 99.00),
+(1, 4, 1, 35.00);
