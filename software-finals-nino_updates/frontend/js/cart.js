@@ -3,6 +3,7 @@ async function loadCart() {
   const emptyMsg = document.getElementById('emptyCartMsg');
 
   try {
+  
     const response = await fetch("http://localhost:3000/api/cart", {
       credentials: "include",
     });
@@ -14,6 +15,10 @@ async function loadCart() {
 
     const data = await response.json();
     const cart = data.cartItems || [];
+
+    if (window.updateCartBadgeFromItems) {
+      window.updateCartBadgeFromItems(cart);
+    }
 
     if (cart.length === 0) {
       tableBody.innerHTML = '';

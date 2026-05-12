@@ -9,24 +9,27 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto gap-lg-3">
         <li class="nav-item">
-          <button class="btn btn-outline-primary active" onclick="filterMenu('all',this)">All</button>
+          <a id="nav-all" class="btn btn-outline-primary" href="menu.html">All</a>
         </li>
         <li class="nav-item">
-          <button class="btn btn-outline-primary" onclick="filterMenu('chicken',this)">Chicken</button>
+          <a id="nav-chicken" class="btn btn-outline-primary" href="chicken.html">Chicken</a>
         </li>
         <li class="nav-item">
-          <button class="btn btn-outline-primary" onclick="filterMenu('pork',this)">Pork</button>
+          <a id="nav-pork" class="btn btn-outline-primary" href="pork.html">Pork</a>
         </li>
         <li class="nav-item">
-          <button class="btn btn-outline-primary" onclick="filterMenu('beef',this)">Beef</button>
+          <a id="nav-beef" class="btn btn-outline-primary" href="beef.html">Beef</a>
+        </li>
+        <li class="nav-item">
+          <a id="nav-fish" class="btn btn-outline-primary" href="fish_list.html">Fish</a>
         </li>
       </ul>
 
       <div class="d-flex gap-3 mt-3 mt-lg-0">
-      <a href="cart.html" class="btn btn-outline-light rounded-pill px-4 position-relative">
+      <a id="nav-cart" href="cart.html" class="btn btn-outline-light rounded-pill px-4 position-relative">
           Cart
           <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            0
+            
           </span>
         </a>
         <a href="profile.html" class="btn btn-success rounded-pill px-4">Profile</a>

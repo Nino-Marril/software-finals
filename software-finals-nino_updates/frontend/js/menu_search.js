@@ -1,69 +1,113 @@
 const menuData = [
-  // BEEF CATEGORY
-  { 
-    id: 1, 
-    name: "Beef Tapa", 
-    category: "beef", 
-    price: 150, 
-    desc: "Traditional Filipino cured beef served with a sweet and salty glaze.", 
-    img: "https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg?auto=compress&cs=tinysrgb&w=400" 
+  {
+    id: 1,
+    name: "Pork Siomai",
+    category: "pork",
+    description: "Juicy steamed pork siomai served with chili garlic sauce.",
+    price: 45.00,
+    stock: 100,
+    image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf"
   },
-  { 
-    id: 2, 
-    name: "Beef Caldereta", 
-    category: "beef", 
-    price: 160, 
-    desc: "Hearty beef stew simmered in rich tomato sauce and liver spread.", 
-    img: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&w=400&q=80" 
+  {
+    id: 2,
+    name: "Chicken Rice Bowl",
+    category: "chicken",
+    description: "Warm rice bowl with chicken toppings and savory sauce.",
+    price: 99.00,
+    stock: 80,
+    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"
   },
-
-  // PORK CATEGORY
-  { 
-    id: 3, 
-    name: "Lechon Kawali", 
-    category: "pork", 
-    price: 150, 
-    desc: "Crispy deep-fried pork belly that crackles with every single bite.", 
-    img: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&w=400&q=80" 
+  {
+    id: 3,
+    name: "Special Batchoy",
+    category: "pork",
+    description: "Hot noodle soup with pork, egg, and flavorful broth.",
+    price: 85.00,
+    stock: 50,
+    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624"
   },
-  { 
-    id: 4, 
-    name: "Pork Siomai", 
-    category: "pork", 
-    price: 80, 
-    desc: "Steamed savory pork dumplings served with spicy chili garlic oil.", 
-    img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=400&q=80" 
+  {
+    id: 4,
+    name: "Iced Tea",
+    category: "drinks",
+    description: "Refreshing house-blend iced tea.",
+    price: 35.00,
+    stock: 120,
+    image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc"
   },
-
-  // CHICKEN CATEGORY
-  { 
-    id: 5, 
-    name: "Chicken Adobo", 
-    category: "chicken", 
-    price: 120, 
-    desc: "The classic Filipino favorite: chicken braised in soy sauce and vinegar.", 
-    img: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=400&q=80" 
+  {
+    id: 5,
+    name: "Pork Siomai",
+    category: "pork",
+    description: "Juicy steamed pork siomai served with chili garlic sauce.",
+    price: 45.00,
+    stock: 100,
+    image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf"
   },
-  { 
-    id: 6, 
-    name: "Chicken Inasal", 
-    category: "chicken", 
-    price: 140, 
-    desc: "Grilled chicken marinated in lemongrass, calamansi, and annatto oil.", 
-    img: "https://images.pexels.com/photos/2673353/pexels-photo-2673353.jpeg?auto=compress&cs=tinysrgb&w=400" 
+  {
+    id: 6,
+    name: "Chicken Rice Bowl",
+    category: "chicken",
+    description: "Warm rice bowl with chicken toppings and savory sauce.",
+    price: 99.00,
+    stock: 80,
+    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"
   },
-
-  // EXTRA ITEMS
-  { 
-    id: 7, 
-    name: "Special Batchoy", 
-    category: "pork", 
-    price: 130, 
-    desc: "Iloilo's famous noodle soup with pork offal, crushed chicharon, and beef loin.", 
-    img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80" 
+  {
+    id: 7,
+    name: "Special Batchoy",
+    category: "pork",
+    description: "Hot noodle soup with pork, egg, and flavorful broth.",
+    price: 85.00,
+    stock: 50,
+    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624"
+  },
+  {
+    id: 8,
+    name: "Iced Tea",
+    category: "drinks",
+    description: "Refreshing house-blend iced tea.",
+    price: 35.00,
+    stock: 120,
+    image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc"
+  },
+  {
+    id: 9,
+    name: "Fish Fillet",
+    category: "fish",
+    description: "Crispy golden-brown white fish fillet served with tartar sauce.",
+    price: 120.00,
+    stock: 60,
+    image: "https://images.unsplash.com/photo-1574484284002-952d92456975"
+  },
+  {
+    id: 10,
+    name: "Fried Bangus",
+    category: "fish",
+    description: "Crispy fried milkfish marinated in vinegar, garlic, and peppercorns.",
+    price: 150.00,
+    stock: 40,
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2"
+  },
+  {
+    id: 11,
+    name: "Grilled Tilapia",
+    category: "fish",
+    description: "Freshly grilled tilapia seasoned with herbs and spices.",
+    price: 135.00,
+    stock: 45,
+    image: "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6"
+  },
+  {
+    id: 12,
+    name: "Sinigang na Isda",
+    category: "fish",
+    description: "Traditional Filipino sour soup with fish and fresh local vegetables.",
+    price: 165.00,
+    stock: 30,
+    image: "https://images.unsplash.com/photo-1626509135522-646d6767233e"
   }
 ];
-
 /**
  * Renders the menu cards into the grid
  */
@@ -74,7 +118,7 @@ function renderCards(data) {
   grid.innerHTML = data.map(item => `
     <div class="col">
       <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden menu-card-hover">
-        <img src="${item.image_url || item.img}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
+        <img src="${item.image_url || item.image || item.img || `https://picsum.photos/seed/paldo-${item.product_id || item.id || item.name}/640/400`}" onerror="this.onerror=null;this.src='https://picsum.photos/seed/paldo-fallback/640/400';" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
         <div class="card-body d-flex flex-column">
           <div class="d-flex justify-content-between align-items-start mb-2">
             <h5 class="card-title fw-bold mb-0">${item.name}</h5>
